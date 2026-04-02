@@ -1,0 +1,885 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Game Edukasi: Misi Desain Grafis!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --primary: #6c5ce7;
+        --secondary: #00cec9;
+        --accent: #fd79a8;
+        --success: #00b894;
+        --warning: #fdcb6e;
+        --danger: #ff7675;
+        --dark: #2d3436;
+        --light: #f4f7f6;
+        --white: #ffffff;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        color: var(--dark);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        overflow-x: hidden;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 20px;
+      }
+
+      /* Card Styles */
+      .card {
+        background: var(--white);
+        border-radius: 24px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        animation: slideUp 0.5s ease-out;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hidden {
+        display: none !important;
+      }
+
+      /* Typography */
+      h1,
+      h2,
+      h3 {
+        font-family: "Fredoka", sans-serif;
+        color: var(--primary);
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      p {
+        margin-bottom: 15px;
+        line-height: 1.6;
+        text-align: center;
+      }
+
+      /* Form Inputs */
+      .input-group {
+        margin-bottom: 20px;
+        text-align: left;
+      }
+      label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: var(--dark);
+      }
+      input[type="text"],
+      input[type="number"] {
+        width: 100%;
+        padding: 15px;
+        border: 2px solid #dfe6e9;
+        border-radius: 12px;
+        font-family: inherit;
+        font-size: 16px;
+        transition: all 0.3s;
+      }
+      input:focus {
+        border-color: var(--primary);
+        outline: none;
+        box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.2);
+      }
+
+      /* Buttons */
+      .btn {
+        display: inline-block;
+        padding: 15px 30px;
+        font-size: 18px;
+        font-weight: 600;
+        font-family: "Fredoka", sans-serif;
+        color: var(--white);
+        background: var(--primary);
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        text-align: center;
+        width: 100%;
+        box-shadow: 0 5px 15px rgba(108, 92, 231, 0.4);
+      }
+      .btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(108, 92, 231, 0.5);
+      }
+      .btn:active {
+        transform: translateY(1px);
+      }
+      .btn-secondary {
+        background: var(--secondary);
+        box-shadow: 0 5px 15px rgba(0, 206, 201, 0.4);
+      }
+      .btn-danger {
+        background: var(--danger);
+        box-shadow: 0 5px 15px rgba(255, 118, 117, 0.4);
+        width: auto;
+      }
+
+      /* Progress Bar */
+      .progress-container {
+        width: 100%;
+        background: #dfe6e9;
+        border-radius: 20px;
+        height: 12px;
+        margin-bottom: 30px;
+        overflow: hidden;
+      }
+      .progress-bar {
+        height: 100%;
+        background: linear-gradient(90deg, var(--secondary), var(--primary));
+        width: 0%;
+        transition: width 0.4s ease;
+      }
+
+      /* Question Area */
+      .question-text {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 25px;
+      }
+      .options-grid {
+        display: grid;
+        gap: 15px;
+        grid-template-columns: 1fr;
+      }
+
+      /* Interactive Option Cards */
+      .option-card {
+        background: var(--light);
+        border: 3px solid transparent;
+        border-radius: 16px;
+        padding: 20px;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        min-height: 100px;
+        text-align: center;
+        font-weight: 500;
+      }
+      .option-card:hover {
+        border-color: var(--secondary);
+        transform: scale(1.02);
+      }
+      .option-card.selected {
+        border-color: var(--primary);
+        background: #eef2ff;
+        animation: pulse 0.3s;
+      }
+
+      /* Visual Simulations inside options */
+      .sim-box {
+        width: 100%;
+        height: 80px;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+      }
+      .sim-layout {
+        display: flex;
+        width: 100%;
+        height: 80px;
+        gap: 5px;
+      }
+      .sim-layout div {
+        background: #b2bec3;
+        border-radius: 4px;
+      }
+
+      /* Results & Analysis */
+      .score-circle {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        background: var(--primary);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 48px;
+        font-weight: bold;
+        font-family: "Fredoka", sans-serif;
+        margin: 0 auto 20px;
+        box-shadow: 0 10px 20px rgba(108, 92, 231, 0.3);
+        border: 8px solid #eef2ff;
+      }
+      .analysis-box {
+        background: var(--light);
+        padding: 20px;
+        border-radius: 15px;
+        margin-top: 20px;
+        text-align: left;
+        border-left: 5px solid var(--primary);
+      }
+      .analysis-box h4 {
+        margin-bottom: 10px;
+        color: var(--primary);
+      }
+      .analysis-box ul {
+        padding-left: 20px;
+        margin-bottom: 15px;
+      }
+
+      /* Dashboard */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        font-size: 14px;
+      }
+      th,
+      td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+      th {
+        background: var(--primary);
+        color: white;
+      }
+      tr:hover {
+        background: #f1f2f6;
+      }
+
+      /* Footer / Secret Teacher Link */
+      .footer {
+        text-align: center;
+        margin-top: 30px;
+        font-size: 12px;
+        color: #636e72;
+      }
+      .teacher-link {
+        color: #636e72;
+        text-decoration: none;
+        cursor: pointer;
+      }
+      .teacher-link:hover {
+        color: var(--primary);
+      }
+
+      /* Animations */
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(40px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(0.95);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      .fade-in {
+        animation: fadeIn 0.4s ease-in;
+      }
+
+      /* Nav Buttons */
+      .nav-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+        gap: 15px;
+      }
+
+      /* Utilities */
+      .badge {
+        display: inline-block;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: bold;
+        color: white;
+      }
+      .bg-pemula {
+        background: var(--danger);
+      }
+      .bg-berkembang {
+        background: var(--warning);
+        color: #2d3436;
+      }
+      .bg-siap {
+        background: var(--success);
+      }
+      .emoji-large {
+        font-size: 40px;
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div id="home-screen" class="card">
+        <h1>🎨 Misi Desainer Muda!</h1>
+        <p>Halo Sobat Kreatif! Yuk, uji insting desainmu dan cari tahu level kreativitasmu di dunia digital.</p>
+
+        <div style="text-align: center; margin: 20px 0">
+          <span class="emoji-large">👩‍🎨</span>
+          <span class="emoji-large">✨</span>
+          <span class="emoji-large">👨‍💻</span>
+        </div>
+
+        <div class="input-group">
+          <label>Nama Lengkap</label>
+          <input type="text" id="studentName" placeholder="Contoh: Budi Santoso" autocomplete="off" />
+        </div>
+        <div class="input-group" style="display: flex; gap: 15px">
+          <div style="flex: 1">
+            <label>Kelas</label>
+            <input type="text" id="studentClass" placeholder="Contoh: 7A" autocomplete="off" />
+          </div>
+          <div style="flex: 1">
+            <label>No. Absen</label>
+            <input type="number" id="studentAbsen" placeholder="Contoh: 12" />
+          </div>
+        </div>
+        <button class="btn" onclick="startQuiz()">Mulai Petualangan! 🚀</button>
+      </div>
+
+      <div id="quiz-screen" class="card hidden">
+        <div class="progress-container">
+          <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 15px; font-weight: bold; color: var(--primary)">
+          <span id="q-counter">Soal 1 / 15</span>
+          <span id="q-topic" style="background: #eef2ff; padding: 3px 10px; border-radius: 10px; font-size: 12px">Topik</span>
+        </div>
+
+        <div id="question-container" class="fade-in"></div>
+
+        <div class="nav-buttons">
+          <button class="btn btn-secondary hidden" id="btn-prev" onclick="prevQuestion()">⬅️ Kembali</button>
+          <button class="btn" id="btn-next" onclick="nextQuestion()">Selanjutnya ➡️</button>
+          <button class="btn hidden" id="btn-submit" onclick="submitQuiz()" style="background: var(--success)">Lihat Hasil! 🎉</button>
+        </div>
+      </div>
+
+      <div id="result-screen" class="card hidden" style="text-align: center">
+        <h2>Misi Selesai! 🏁</h2>
+        <p id="result-name" style="font-weight: bold; font-size: 18px"></p>
+
+        <div class="score-circle" id="result-score">0</div>
+
+        <h3 id="result-category">Kategori</h3>
+        <p id="result-desc"></p>
+
+        <div class="analysis-box">
+          <h4>🤖 Analisis AI (Sistem):</h4>
+          <p><strong>🌟 Kekuatan Kamu:</strong></p>
+          <ul id="analysis-strengths"></ul>
+
+          <p><strong>🎯 Perlu Ditingkatkan:</strong></p>
+          <ul id="analysis-weaknesses"></ul>
+
+          <p><strong>💡 Rekomendasi Belajar:</strong></p>
+          <ul id="analysis-recoms"></ul>
+        </div>
+
+        <button class="btn" onclick="location.reload()" style="margin-top: 20px">Selesai & Main Lagi 🔄</button>
+      </div>
+
+      <div id="dashboard-screen" class="card hidden">
+        <div style="display: flex; justify-content: space-between; align-items: center">
+          <h2>👨‍🏫 Dashboard Guru</h2>
+          <button onclick="closeDashboard()" style="background: none; border: none; font-size: 24px; cursor: pointer">✖️</button>
+        </div>
+        <p>Rekapitulasi hasil tes diagnostik siswa kelas 7.</p>
+
+        <div style="overflow-x: auto">
+          <table id="studentTable">
+            <thead>
+              <tr>
+                <th>Waktu</th>
+                <th>Nama</th>
+                <th>Kelas</th>
+                <th>Absen</th>
+                <th>Skor</th>
+                <th>Kategori</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+        </div>
+
+        <div class="nav-buttons">
+          <button class="btn btn-secondary" onclick="downloadCSV()">📥 Download CSV</button>
+          <button class="btn btn-danger" onclick="resetData()">🗑️ Hapus Semua Data</button>
+        </div>
+      </div>
+
+      <div class="footer" id="footer-text">Dibuat untuk Pembelajaran Informatika SMP | <span class="teacher-link" onclick="openDashboard()">Dashboard Guru 🔒</span></div>
+    </div>
+
+    <script>
+      // --- DATABASE SOAL ---
+      const questions = [
+        {
+          topic: "Warna & Kontras",
+          q: "Kamu membuat poster pengumuman lomba. Manakah kombinasi warna teks dan background yang *paling mudah* dibaca dari jarak jauh?",
+          type: "visual",
+          options: [
+            { id: "A", html: "<div class='sim-box' style='background: white; color: yellow;'>PENGUMUMAN</div>", label: "Teks Kuning, Background Putih" },
+            { id: "B", html: "<div class='sim-box' style='background: black; color: white;'>PENGUMUMAN</div>", label: "Teks Putih, Background Hitam" },
+            { id: "C", html: "<div class='sim-box' style='background: blue; color: red;'>PENGUMUMAN</div>", label: "Teks Merah, Background Biru" },
+          ],
+          answer: "B",
+        },
+        {
+          topic: "Aplikasi Desain",
+          q: "Aplikasi apa yang paling praktis dan sering digunakan saat ini untuk membuat desain grafis/poster dengan template di laptop atau HP?",
+          type: "text",
+          options: [
+            { id: "A", label: "Microsoft Excel" },
+            { id: "B", label: "Canva" },
+            { id: "C", label: "Notepad" },
+          ],
+          answer: "B",
+        },
+        {
+          topic: "Layout",
+          q: "Manakah susunan elemen (Layout) yang terlihat paling rapi dan profesional?",
+          type: "visual",
+          options: [
+            { id: "A", html: "<div class='sim-layout'><div style='flex:1; margin-top:20px;'>Teks</div><div style='flex:2;'>Gambar</div><div style='flex:1;'>Judul</div></div>", label: "Berantakan (Tidak sejajar)" },
+            {
+              id: "B",
+              html: "<div class='sim-layout' style='flex-direction:column; gap:5px;'><div style='height:20px; width:100%;'>Judul</div><div style='height:40px; width:100%;'>Gambar</div><div style='height:15px; width:100%;'>Teks</div></div>",
+              label: "Terstruktur (Atas ke Bawah)",
+            },
+          ],
+          answer: "B",
+        },
+        {
+          topic: "Warna & Kontras",
+          q: "Simulasi: Background brosurmu berwarna *Biru Gelap (Navy)*. Agar teks penjelasannya mudah dibaca, warna apa yang sebaiknya kamu pilih?",
+          type: "text",
+          options: [
+            { id: "A", label: "Hijau Tua" },
+            { id: "B", label: "Hitam Gelap" },
+            { id: "C", label: "Putih atau Kuning Terang" },
+          ],
+          answer: "C",
+        },
+        {
+          topic: "Diseminasi (Penyebaran)",
+          q: "Studi Kasus: OSIS meminta bantuanmu menyebarkan poster Lomba E-Sport sekolah agar banyak siswa yang mendaftar. Cara penyebaran (diseminasi) digital paling efektif adalah...",
+          type: "text",
+          options: [
+            { id: "A", label: "Disimpan saja di Flashdisk" },
+            { id: "B", label: "Diunggah ke Instagram & Grup WhatsApp Sekolah" },
+            { id: "C", label: "Dijadikan wallpaper laptop pribadi" },
+          ],
+          answer: "B",
+        },
+        {
+          topic: "Etika Digital",
+          q: "Saat mencari gambar di Google untuk tugas desain, apa hal penting (Etika Digital) yang harus diperhatikan?",
+          type: "text",
+          options: [
+            { id: "A", label: "Langsung simpan dan gunakan karena semua gratis" },
+            { id: "B", label: "Memperhatikan hak cipta (copyright) dan mencantumkan sumber" },
+            { id: "C", label: "Mengganti nama file gambar agar terlihat buatan sendiri" },
+          ],
+          answer: "B",
+        },
+        {
+          topic: "Tipografi (Font)",
+          q: "Kamu membuat poster peringatan Hari Kemerdekaan RI yang resmi. Manakah jenis huruf (Font) yang paling cocok?",
+          type: "visual",
+          options: [
+            { id: "A", html: "<div class='sim-box' style='font-family: \"Comic Sans MS\", cursive, sans-serif;'>Dirgahayu RI</div>", label: "Huruf Santai/Komik" },
+            { id: "B", html: "<div class='sim-box' style='font-family: Arial, sans-serif; font-weight:bold;'>DIRGAHAYU RI</div>", label: "Huruf Tegas & Jelas (Sans-Serif)" },
+            { id: "C", html: "<div class='sim-box' style='font-family: \"Brush Script MT\", cursive;'>Dirgahayu RI</div>", label: "Huruf Latin Sulit Dibaca" },
+          ],
+          answer: "B",
+        },
+        {
+          topic: "Layout",
+          q: "Di mana posisi terbaik untuk meletakkan 'JUDUL UTAMA' pada sebuah poster agar pertama kali dilihat orang?",
+          type: "text",
+          options: [
+            { id: "A", label: "Pojok Kanan Bawah, ukuran kecil" },
+            { id: "B", label: "Tengah Atas, ukuran besar dan tebal" },
+            { id: "C", label: "Sembunyi di belakang gambar" },
+          ],
+          answer: "B",
+        },
+        {
+          topic: "Konsep Desain",
+          q: "Dalam membuat konten digital, kita sering mendengar istilah 'Target Audience' (Target Pembaca). Siapakah mereka?",
+          type: "text",
+          options: [
+            { id: "A", label: "Orang yang membuat desain" },
+            { id: "B", label: "Orang yang akan melihat dan membaca desain kita" },
+            { id: "C", label: "Aplikasi yang digunakan" },
+          ],
+          answer: "B",
+        },
+        {
+          topic: "Aplikasi Desain",
+          q: "Urutkan langkah dasar membuat poster di Canva yang benar: (1) Unduh/Download, (2) Pilih Template, (3) Edit Teks & Gambar.",
+          type: "text",
+          options: [
+            { id: "A", label: "2 - 3 - 1 (Pilih Template -> Edit -> Unduh)" },
+            { id: "B", label: "1 - 2 - 3 (Unduh -> Pilih Template -> Edit)" },
+            { id: "C", label: "3 - 2 - 1 (Edit -> Pilih Template -> Unduh)" },
+          ],
+          answer: "A",
+        },
+        {
+          topic: "Kualitas Visual",
+          q: "Pilih gambar ikon yang paling baik untuk dipasang di presentasimu:",
+          type: "visual",
+          options: [
+            { id: "A", html: "<div class='sim-box' style='font-size: 40px; filter: blur(3px);'>🚀</div>", label: "Ikon Pecah / Blur (Resolusi Rendah)" },
+            { id: "B", html: "<div class='sim-box' style='font-size: 40px;'>🚀</div>", label: "Ikon Tajam (Resolusi Tinggi)" },
+          ],
+          answer: "B",
+        },
+        {
+          topic: "Diseminasi (Penyebaran)",
+          q: "Kamu membuat tugas berupa 'Video Animasi Pendek'. Platform media sosial mana yang tepat untuk mempublikasikannya?",
+          type: "text",
+          options: [
+            { id: "A", label: "Spotify (Platform Audio)" },
+            { id: "B", label: "YouTube, TikTok, atau Reels Instagram" },
+            { id: "C", label: "Microsoft Word" },
+          ],
+          answer: "B",
+        },
+        {
+          topic: "Layout",
+          q: "Mengapa kita perlu menyisakan 'Ruang Kosong' (Negative Space) di dalam desain poster kita?",
+          type: "text",
+          options: [
+            { id: "A", label: "Karena kehabisan ide mau diisi apa" },
+            { id: "B", label: "Agar desain terlihat lega, tidak sesak, dan mudah dibaca" },
+            { id: "C", label: "Untuk menghemat tinta jika di-print" },
+          ],
+          answer: "B",
+        },
+        {
+          topic: "Tipografi (Font)",
+          q: "Kamu ingin menyoroti kata **'DISKON 50%'** agar paling menonjol. Apa yang kamu lakukan?",
+          type: "text",
+          options: [
+            { id: "A", label: "Mengecilkan ukurannya" },
+            { id: "B", label: "Membuatnya lebih besar, tebal (Bold), atau warnanya kontras" },
+            { id: "C", label: "Menyamakan ukurannya dengan teks biasa" },
+          ],
+          answer: "B",
+        },
+        {
+          topic: "Etika Digital",
+          q: "Setelah kamu menyebarkan desain poster karyamu di media sosial, ada yang memberi komentar kritik. Sikap digital yang baik adalah?",
+          type: "text",
+          options: [
+            { id: "A", label: "Membalas dengan marah-marah" },
+            { id: "B", label: "Menerima kritik dengan baik jika membangun, mengabaikan jika itu ujaran kebencian" },
+            { id: "C", label: "Langsung menghapus akun media sosial" },
+          ],
+          answer: "B",
+        },
+      ];
+
+      // --- STATE MANAGEMENT ---
+      let currentQ = 0;
+      let answers = {}; // { 0: "A", 1: "B" }
+      let studentInfo = {};
+
+      // --- DOM ELEMENTS ---
+      const homeScreen = document.getElementById("home-screen");
+      const quizScreen = document.getElementById("quiz-screen");
+      const resultScreen = document.getElementById("result-screen");
+      const dashboardScreen = document.getElementById("dashboard-screen");
+      const qContainer = document.getElementById("question-container");
+      const btnNext = document.getElementById("btn-next");
+      const btnPrev = document.getElementById("btn-prev");
+      const btnSubmit = document.getElementById("btn-submit");
+      const progressBar = document.getElementById("progressBar");
+
+      // --- FUNCTIONS ---
+      function startQuiz() {
+        const name = document.getElementById("studentName").value.trim();
+        const cls = document.getElementById("studentClass").value.trim();
+        const absen = document.getElementById("studentAbsen").value.trim();
+
+        if (!name || !cls || !absen) {
+          alert("Wah, jangan lupa isi Nama, Kelas, dan No. Absen dulu ya! 🕵️‍♂️");
+          return;
+        }
+
+        studentInfo = { name, cls, absen, date: new Date().toLocaleString() };
+
+        homeScreen.classList.add("hidden");
+        document.getElementById("footer-text").classList.add("hidden");
+        quizScreen.classList.remove("hidden");
+        renderQuestion();
+      }
+
+      function renderQuestion() {
+        // Update Header
+        document.getElementById("q-counter").innerText = `Soal ${currentQ + 1} / ${questions.length}`;
+        document.getElementById("q-topic").innerText = `Topik: ${questions[currentQ].topic}`;
+        progressBar.style.width = `${((currentQ + 1) / questions.length) * 100}%`;
+
+        const q = questions[currentQ];
+        let html = `<div class="question-text">${currentQ + 1}. ${q.q}</div>`;
+        html += `<div class="options-grid">`;
+
+        q.options.forEach((opt) => {
+          const isSelected = answers[currentQ] === opt.id ? "selected" : "";
+          html += `
+                <div class="option-card ${isSelected}" onclick="selectOption('${opt.id}')">
+                    ${q.type === "visual" && opt.html ? opt.html : ""}
+                    <div><strong>${opt.id}.</strong> ${opt.label}</div>
+                </div>
+            `;
+        });
+        html += `</div>`;
+
+        qContainer.innerHTML = html;
+
+        // Button Visibility
+        btnPrev.classList.toggle("hidden", currentQ === 0);
+
+        if (currentQ === questions.length - 1) {
+          btnNext.classList.add("hidden");
+          btnSubmit.classList.remove("hidden");
+        } else {
+          btnNext.classList.remove("hidden");
+          btnSubmit.classList.add("hidden");
+        }
+      }
+
+      function selectOption(id) {
+        answers[currentQ] = id;
+        renderQuestion(); // Re-render to show selected state
+      }
+
+      function nextQuestion() {
+        if (!answers[currentQ]) {
+          alert("Pilih salah satu jawaban dulu ya! 👇");
+          return;
+        }
+        currentQ++;
+        renderQuestion();
+      }
+
+      function prevQuestion() {
+        currentQ--;
+        renderQuestion();
+      }
+
+      function submitQuiz() {
+        if (!answers[currentQ]) {
+          alert("Pilih jawaban terakhir dulu ya! 👇");
+          return;
+        }
+
+        // Calculate Score & Analysis Logic
+        let score = 0;
+        let topicAnalysis = {
+          "Warna & Kontras": { total: 0, correct: 0 },
+          "Aplikasi Desain": { total: 0, correct: 0 },
+          Layout: { total: 0, correct: 0 },
+          "Diseminasi (Penyebaran)": { total: 0, correct: 0 },
+          "Etika Digital": { total: 0, correct: 0 },
+          "Tipografi (Font)": { total: 0, correct: 0 },
+          "Konsep Desain": { total: 0, correct: 0 },
+          "Kualitas Visual": { total: 0, correct: 0 },
+        };
+
+        questions.forEach((q, index) => {
+          topicAnalysis[q.topic].total++;
+          if (answers[index] === q.answer) {
+            score += 100 / questions.length;
+            topicAnalysis[q.topic].correct++;
+          }
+        });
+
+        score = Math.round(score);
+        studentInfo.score = score;
+
+        // Determine Category
+        let category = "";
+        let catClass = "";
+        if (score <= 40) {
+          category = "Desainer Pemula";
+          catClass = "bg-pemula";
+          studentInfo.cat = "Pemula";
+        } else if (score <= 70) {
+          category = "Desainer Berkembang";
+          catClass = "bg-berkembang";
+          studentInfo.cat = "Berkembang";
+        } else {
+          category = "Desainer Siap Karya!";
+          catClass = "bg-siap";
+          studentInfo.cat = "Siap Karya";
+        }
+
+        // Generate AI Analysis Text
+        let strengths = [];
+        let weaknesses = [];
+
+        for (let topic in topicAnalysis) {
+          let ratio = topicAnalysis[topic].correct / topicAnalysis[topic].total;
+          if (ratio >= 0.6) strengths.push(topic);
+          else weaknesses.push(topic);
+        }
+
+        let recoms = [];
+        if (weaknesses.includes("Warna & Kontras") || weaknesses.includes("Tipografi (Font)")) {
+          recoms.push("Latih kepekaan matamu dengan melihat referensi poster di Pinterest atau Canva.");
+        }
+        if (weaknesses.includes("Aplikasi Desain") || weaknesses.includes("Layout")) {
+          recoms.push("Cobalah buat 1 desain poster sederhana menggunakan template Canva.");
+        }
+        if (weaknesses.includes("Diseminasi (Penyebaran)") || weaknesses.includes("Etika Digital")) {
+          recoms.push("Pelajari cara yang sopan dan aman saat membagikan karya di media sosial.");
+        }
+        if (recoms.length === 0) recoms.push("Pertahankan karyamu dan mulailah mencoba membuat desain kreatif (Project Based)!");
+
+        // Display Results
+        document.getElementById("result-name").innerText = `Hebat, ${studentInfo.name}!`;
+        document.getElementById("result-score").innerText = score;
+        document.getElementById("result-category").innerHTML = `<span class="badge ${catClass}">${category}</span>`;
+
+        document.getElementById("analysis-strengths").innerHTML = strengths.length > 0 ? strengths.map((s) => `<li>✔️ Memahami konsep <b>${s}</b> dengan baik.</li>`).join("") : `<li>Terus semangat belajar dasar-dasar desain ya!</li>`;
+        document.getElementById("analysis-weaknesses").innerHTML = weaknesses.length > 0 ? weaknesses.map((w) => `<li>⚠️ Perlu pendalaman pada materi <b>${w}</b>.</li>`).join("") : `<li>🎉 Hampir sempurna! Semua topik kamu kuasai.</li>`;
+        document.getElementById("analysis-recoms").innerHTML = recoms.map((r) => `<li>💡 ${r}</li>`).join("");
+
+        // Save to LocalStorage
+        saveData(studentInfo);
+
+        // Transition Screen
+        quizScreen.classList.add("hidden");
+        resultScreen.classList.remove("hidden");
+      }
+
+      // --- DATA MANAGEMENT (LOCALSTORAGE) ---
+      function saveData(data) {
+        let db = JSON.parse(localStorage.getItem("designQuizDB")) || [];
+        db.push(data);
+        localStorage.setItem("designQuizDB", JSON.stringify(db));
+      }
+
+      function openDashboard() {
+        let pass = prompt("Masukkan password guru:");
+        if (pass === "guru123") {
+          // Password sederhana
+          homeScreen.classList.add("hidden");
+          document.getElementById("footer-text").classList.add("hidden");
+          dashboardScreen.classList.remove("hidden");
+          renderTable();
+        } else if (pass !== null) {
+          alert("Password Salah!");
+        }
+      }
+
+      function closeDashboard() {
+        dashboardScreen.classList.add("hidden");
+        homeScreen.classList.remove("hidden");
+        document.getElementById("footer-text").classList.remove("hidden");
+      }
+
+      function renderTable() {
+        let db = JSON.parse(localStorage.getItem("designQuizDB")) || [];
+        const tbody = document.getElementById("tableBody");
+        tbody.innerHTML = "";
+
+        if (db.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;">Belum ada data siswa</td></tr>`;
+          return;
+        }
+
+        db.forEach((row) => {
+          let catColor = row.score >= 71 ? "green" : row.score >= 41 ? "orange" : "red";
+          tbody.innerHTML += `
+                <tr>
+                    <td>${row.date}</td>
+                    <td><b>${row.name}</b></td>
+                    <td>${row.cls}</td>
+                    <td>${row.absen}</td>
+                    <td><b>${row.score}</b></td>
+                    <td style="color:${catColor}; font-weight:bold;">${row.cat}</td>
+                </tr>
+            `;
+        });
+      }
+
+      function downloadCSV() {
+        let db = JSON.parse(localStorage.getItem("designQuizDB")) || [];
+        if (db.length === 0) {
+          alert("Tidak ada data untuk didownload");
+          return;
+        }
+
+        let csvContent = "data:text/csv;charset=utf-8,";
+        csvContent += "Waktu,Nama,Kelas,No Absen,Skor,Kategori\n";
+
+        db.forEach((row) => {
+          let safeName = row.name.replace(/,/g, " ");
+          csvContent += `${row.date},${safeName},${row.cls},${row.absen},${row.score},${row.cat}\n`;
+        });
+
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "Hasil_Tes_Desain_Kelas7.csv");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+
+      function resetData() {
+        if (confirm("Yakin ingin menghapus SEMUA data siswa? Ini tidak bisa dikembalikan!")) {
+          localStorage.removeItem("designQuizDB");
+          renderTable();
+          alert("Data berhasil dihapus.");
+        }
+      }
+    </script>
+  </body>
+</html>
