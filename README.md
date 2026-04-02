@@ -1,1 +1,0 @@
-# tes-kemampuan-design
